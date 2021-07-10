@@ -18,6 +18,9 @@
 #' @noRd
 .parse_bbox <- function(bbox) {
 
+  if (is.character(bbox))
+    bbox <- strsplit(bbox, ",")[[1]]
+
   if (!length(bbox) %in% c(4, 6))
     .error("Param `bbox` must have 4 or 6 numbers, not %s.", length(bbox))
 
@@ -77,6 +80,9 @@
 #' @noRd
 .parse_collections <- function(collections) {
 
+  if (is.character(collections))
+    collections <- strsplit(collections, ",")[[1]]
+
   if (length(collections) == 1 && !is.list(collections))
     collections <- list(collections)
 
@@ -85,13 +91,16 @@
 
 #' @title Utility functions
 #'
-#' @param ids         a \code{character} vector with item IDs. All other filter
+#' @param ids a \code{character} vector with item IDs. All other filter
 #' parameters that further restrict the number of search results are ignored.
 #'
 #' @return A \code{list} with the ids.
 #'
 #' @noRd
 .parse_ids <- function(ids) {
+
+  if (is.character(ids))
+    ids <- strsplit(ids, ",")[[1]]
 
   if (length(ids) == 1 && !is.list(ids))
     ids <- list(ids)
@@ -101,7 +110,7 @@
 
 #' @title Utility functions
 #'
-#' @param intersects  a \code{character} value expressing GeoJSON geometries
+#' @param intersects a \code{character} value expressing GeoJSON geometries
 #' objects as specified in RFC 7946. Only returns items that intersect with
 #' the provided polygon.
 #'
@@ -116,7 +125,7 @@
 
 #' @title Utility functions
 #'
-#' @param items       \code{STACItemCollection} object representing the result
+#' @param items a \code{STACItemCollection} object representing the result
 #'  of \code{/stac/search} or \code{/collections/{collectionId}/items}.
 #'
 #' @return A \code{numeric} with the length of a \code{STACItemCollection}
@@ -376,6 +385,9 @@
 #' @noRd
 .querystring_decode <- function(querystring) {
 
+  # first decode and remove all coded spaces
+  querystring <- URLdecode(querystring)
+
   values <- lapply(strsplit(querystring, split = "&")[[1]],
                    function(x) strsplit(x, split = "=")[[1]])
 
@@ -387,15 +399,34 @@
 
 #' @title Utility functions
 #'
+#' @param params a \code{list} with the parameters of query.
+#'
+#' @return a \code{list} with the query parameters.
+#'
+#' @noRd
+.validate_query <- function(params) {
+
+  if (!is.null(params$query) && is.character(params$query)) {
+    params$query <- jsonlite::fromJSON(params$query, simplifyVector = FALSE)
+
+    if (is.list(params$query))
+      params$query <- list(params$query)
+  }
+
+  return(params)
+}
+
+#' @title Utility functions
+#'
 #' @description
 #' These function retrieves information about either \code{rstac} queries
 #' (\code{RSTACQuery} objects) or \code{rstac} documents
 #' (\code{RSTACDocument} objects).
 #'
-#' @param x        either a \code{RSTACQuery} object expressing a STAC query
+#' @param x   either a \code{RSTACQuery} object expressing a STAC query
 #' criteria or any \code{RSTACDocument}.
 #'
-#' @param ...      config parameters to be passed to \link[httr]{GET}
+#' @param ... config parameters to be passed to \link[httr]{GET}
 #' method, such as \link[httr]{add_headers} or \link[httr]{set_cookies}.
 #'
 #' @return
@@ -493,13 +524,13 @@ assets_list <- function(items, assets_names = NULL, sort = TRUE,
 #'  not atomic the return will be in list form, if they are, it will be returned
 #'  in vector form.
 #'
-#' @param items               a \code{STACItemCollection} object representing
+#' @param items  a \code{STACItemCollection} object representing
 #'  the result of \code{/stac/search}, \code{/collections/{collectionId}/items}.
 #'
-#' @param ...                 a named way to provide fields names to get the
+#' @param ...   a named way to provide fields names to get the
 #'  subfields values from the \code{RSTACDocument} objects.
 #'
-#' @param field               a \code{character} with the names of the field to
+#' @param field a \code{character} with the names of the field to
 #'  get the subfields values from the \code{RSTACDocument} objects.
 #'
 #' @return a \code{vector} if the supplied field is atomic, or a list if not.
@@ -546,16 +577,16 @@ items_reap <- function(items, ..., field = NULL) {
 #' @description This function returns the subfields of the \code{feature}
 #' field of a \code{STACItemCollection} object.
 #'
-#' @param items  a \code{STACItemCollection} object representing
+#' @param items a \code{STACItemCollection} object representing
 #'  the result of \code{/stac/search}, \code{/collections/{collectionId}/items}.
 #'
-#' @param ...    a named way to provide field names to get the subfields values
+#' @param ...   a named way to provide field names to get the subfields values
 #'  from the \code{RSTACDocument} objects.
 #'
 #' @param field a \code{character} with the names of the field to get the
 #'  subfields values from the \code{RSTACDocument} objects.
 #'
-#' @return a \code{character} with the subfields of the \code{feature} field.
+#' @return A \code{character} with the subfields of the \code{feature} field.
 #'
 #' @examples
 #' \donttest{
@@ -585,26 +616,25 @@ items_fields <- function(items, ..., field = NULL) {
   names(items$features[[1]][[c(dots, field)]])
 }
 
-
 #' @title Utility functions
 #'
 #' @description This function groups the items contained within the
 #'  \code{STACItemCollection} object according to some specified fields. Each
 #'  index in the returned list contains items belonging to the same group.
 #'
-#' @param items               a \code{STACItemCollection} object representing
-#'  the result of \code{/stac/search}, \code{/collections/{collectionId}/items}.
+#' @param items a \code{STACItemCollection} object representing the result of
+#' \code{/stac/search}, \code{/collections/{collectionId}/items}.
 #'
-#' @param ...    a named way to provide field names to get the subfields values
+#' @param ...   a named way to provide field names to get the subfields values
 #'  from the \code{RSTACDocument} objects.
 #'
-#' @param field  a \code{character} with the names of the field to get the
+#' @param field a \code{character} with the names of the field to get the
 #'  subfields values from the \code{RSTACDocument} objects.
 #'
 #' @param index a \code{character} with the indexes to be grouped. It can be
 #'  used with the function \link{items_reap}.
 #'
-#' @return a \code{list} in which each index corresponds to a group with its
+#' @return A \code{list} in which each index corresponds to a group with its
 #'  corresponding \code{STACItemCollection} objects.
 #'
 #' @examples
@@ -666,7 +696,7 @@ items_group <- function(items, ..., field = NULL, index = NULL) {
 
 #' @title Utility functions
 #'
-#' @param bbox        a \code{numeric} vector with only features that have a
+#' @param bbox a \code{numeric} vector with only features that have a
 #' geometry that intersects the bounding box are selected. The bounding box is
 #' provided as four or six numbers, depending on whether the coordinate
 #' reference system includes a vertical axis (elevation or depth):
@@ -677,7 +707,7 @@ items_group <- function(items, ..., field = NULL, index = NULL) {
 #'           \item Upper right corner, coordinate axis 2
 #'           \item Upper right corner, coordinate axis 3 (optional) }.
 #'
-#' @return a \code{character} with \code{bbox} formatted based on min and max
+#' @return A \code{character} with \code{bbox} formatted based on min and max
 #'  values.
 #'
 #' @noRd

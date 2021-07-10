@@ -95,8 +95,8 @@ stac_version.STACCollectionList <- function(x, ...) {
 #' The \code{items_length()} function shows how many items there are in
 #' the \code{STACItemCollection} object.
 #' The \code{items_matched()} function shows how many items matched the
-#' search criteria. It support \code{search:metadata} (v0.8.0) and
-#' \code{context} (v0.9.0) STAC API extensions.
+#' search criteria. It supports \code{search:metadata} (v0.8.0),
+#' \code{context} (v0.9.0), and \code{numberMatched} (OGC WFS3 core spec).
 #' The \code{items_fetch()} function request all STAC Items through
 #' pagination.
 #' The \code{items_datetime()} function retrieves a the \code{datetime}
@@ -107,7 +107,12 @@ stac_version.STACCollectionList <- function(x, ...) {
 #' The \code{get_assets_name()} function returns the assets name from
 #' \code{STACItemCollection} and \code{STACItem} objects.
 #'
-#' @param items      a \code{STACItemCollection} object.
+#' @param items           a \code{STACItemCollection} object.
+#' @param matched_field   a \code{character} vector with the path
+#' where the number of items returned in the named list is located starting from
+#' the initial node of the list. For example, if the information is at position
+#' \code{items$meta$found} of the object, it must be passed as the following
+#' parameter \code{c("meta", "found")}.
 #'
 #' @return
 #' The \code{items_length()} returns an \code{integer} value.
@@ -147,24 +152,37 @@ items_length <- function(items) {
 #' @rdname items_functions
 #'
 #' @export
-items_matched <- function(items) {
-
-  # STAC API (<0.9.0): "search:metadata"
-  # STAC API (>=0.9.0): "context"
+items_matched <- function(items, matched_field = NULL) {
 
   # Check object class
   check_subclass(items, "STACItemCollection")
 
-  if (stac_version(items) < "0.9.0")
-    # STAC API < 0.9.0 extensions
-    matched <- items$`search:metadata`$matched
-  else
-    # STAC API >= 0.9.0 extensions
-    matched <- items$`context`$matched
+  matched <- NULL
 
-  # try the last resort: WFS3 spec
-  if (is.null(matched))
-    matched <- items$numberMatched
+  # try by the matched_field provided by user. This allow users specify a
+  # non-standard field for matched items.
+  if (!is.null(matched_field)) {
+
+    tryCatch({
+      matched <- as.numeric(items[[matched_field]])
+    },
+    error = function(e) .warning(paste("The provided field was not found in",
+                                       "items object.")))
+  }
+
+  if (is.null(matched)) {
+
+    if (stac_version(items) < "0.9.0")
+      # STAC API < 0.9.0 extensions
+      matched <- items$`search:metadata`$matched
+    else
+      # STAC API >= 0.9.0 extensions
+      matched <- items$`context`$matched
+
+    # try the last resort: OGC features core spec
+    if (is.null(matched))
+      matched <- items$numberMatched
+  }
 
   if (is.null(matched))
     .warning("Items matched not provided.")
@@ -193,12 +211,12 @@ items_matched <- function(items) {
 #' @rdname items_functions
 #'
 #' @export
-items_fetch <- function(items, ..., progress = TRUE) {
+items_fetch <- function(items, ..., progress = TRUE, matched_field = NULL) {
 
   # Check object class
   check_subclass(items, "STACItemCollection")
 
-  matched <- items_matched(items)
+  matched <- items_matched(items, matched_field)
 
   # verify if progress bar can be shown
   progress <- progress & (!is.null(matched) && (items_length(items) < matched))
@@ -207,6 +225,10 @@ items_fetch <- function(items, ..., progress = TRUE) {
                                 style = 3)
 
   while (TRUE) {
+
+    # check if features is complete
+    if (!is.null(matched) && (items_length(items) == matched))
+      break
 
     # protect against infinite loop
     if (!is.null(matched) && (items_length(items) > matched))
@@ -255,7 +277,12 @@ items_fetch <- function(items, ..., progress = TRUE) {
       params <- .querystring_decode(substring(
         gsub("^([^?]+)(\\?.*)?$", "\\2", next_url$href), 2))
 
+      # verify if query params is valid
+      params <- .validate_query(params = params)
     }
+
+    # parse params
+    params <- parse_params(q, params = params)
 
     next_stac <- RSTACQuery(version = q$version,
                             base_url = q$base_url,
@@ -276,6 +303,21 @@ items_fetch <- function(items, ..., progress = TRUE) {
 
     # check content response
     check_subclass(content, "STACItemCollection")
+
+    # check pagination length
+    if (!is.null(q$params[["limit"]]) &&
+        items_length(content) > as.numeric(q$params[["limit"]])) {
+
+      .error("STAC invalid retrieved page length.")
+    }
+
+    # check if result length is valid
+    if (!is.null(matched) && !is.null(q$params[["limit"]]) &&
+        (items_length(content) != as.numeric(q$params[["limit"]])) &&
+        (items_length(content) + items_length(items) != matched)) {
+
+      .error("STAC pagination error.")
+    }
 
     # merge features result into resulting content
     content$features <- c(items$features, content$features)
