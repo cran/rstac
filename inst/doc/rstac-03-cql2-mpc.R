@@ -1,15 +1,23 @@
 ## ---- include = FALSE---------------------------------------------------------
+is_online <- tryCatch({
+  res <- httr::GET("https://planetarycomputer.microsoft.com/api/stac/v1")
+  !httr::http_error(res)
+}, error = function(e) {
+  FALSE
+})
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  cache = TRUE
+  eval = is_online
 )
 
-## ----load-rstac---------------------------------------------------------------
+## ----load-rstac, eval=TRUE----------------------------------------------------
 library(rstac)
 
-## ----connection---------------------------------------------------------------
+## ----connection, eval=TRUE----------------------------------------------------
 planetary_computer <- stac("https://planetarycomputer.microsoft.com/api/stac/v1")
+planetary_computer
 
 ## ----queryables---------------------------------------------------------------
 planetary_computer |>
@@ -60,7 +68,17 @@ purrr::map_dfr(items_assets(selected_item), function(key) {
   tibble::tibble(asset = key, description = selected_item$assets[[key]]$title)
 })
 
-## ----asset-preview------------------------------------------------------------
+## ----asset-preview-check, eval=TRUE, include=FALSE, echo=FALSE----------------
+is_accessible <- is_online && tryCatch({
+  res <- httr::HEAD(
+    assets_url(selected_item, asset_names = "rendered_preview")
+  )
+  !httr::http_error(res)
+}, error = function(e) {
+  FALSE
+})
+
+## ----asset-preview, eval=is_accessible, fig.height=3, fig.width=5-------------
 selected_item$assets[["rendered_preview"]]$href
 
 selected_item |> 
@@ -107,7 +125,7 @@ stac_items <- stac_items |>
 stac_items |>
   items_assets()
 
-## -----------------------------------------------------------------------------
+## ----items-fetch--------------------------------------------------------------
 stac_items <- planetary_computer |>
   ext_filter(
     collection == "sentinel-2-l2a" &&
@@ -164,7 +182,6 @@ daymet
 ## ----daymet-assets------------------------------------------------------------
 items_assets(daymet)
 
-library(stars)
 daymet |>
   assets_select(asset_names = "zarr-abfs") |>
   assets_url()
