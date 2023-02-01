@@ -556,8 +556,8 @@ headers (<code>httr::add_headers()</code>) and cookies
     limit = 400) |&gt;
   post_request()
 #&gt; ###STACItemCollection
-#&gt; - matched feature(s): 1440
-#&gt; - features (400 item(s) / 1040 not fetched):
+#&gt; - matched feature(s): 1818
+#&gt; - features (400 item(s) / 1418 not fetched):
 #&gt;   - CB4_64_16D_STK_v001_017022_2021-01-17_2021-02-01
 #&gt;   - CB4_64_16D_STK_v001_017023_2021-01-17_2021-02-01
 #&gt;   - CB4_64_16D_STK_v001_018023_2021-01-17_2021-02-01
@@ -579,8 +579,8 @@ request:</p>
   stac_search(collections = c(&quot;CB4_64_16D_STK-1&quot;, &quot;S2-16D-2&quot;)) |&gt;
   post_request(config = c(httr::add_headers(&quot;x-api-key&quot; = &quot;MY-KEY&quot;)))
 #&gt; ###STACItemCollection
-#&gt; - matched feature(s): 67444
-#&gt; - features (10 item(s) / 67434 not fetched):
+#&gt; - matched feature(s): 77540
+#&gt; - features (10 item(s) / 77530 not fetched):
 #&gt;   - S2-16D_V2_001014_20220930
 #&gt;   - S2-16D_V2_002011_20220930
 #&gt;   - S2-16D_V2_002012_20220930
@@ -646,8 +646,8 @@ format for viewing objects is in <strong>Markdown</strong>.</p>
   stac_search(collections = c(&quot;CB4_64_16D_STK&quot;, &quot;S2-16D-2&quot;)) |&gt;
   get_request()
 #&gt; ###STACItemCollection
-#&gt; - matched feature(s): 59939
-#&gt; - features (10 item(s) / 59929 not fetched):
+#&gt; - matched feature(s): 70035
+#&gt; - features (10 item(s) / 70025 not fetched):
 #&gt;   - S2-16D_V2_001014_20220930
 #&gt;   - S2-16D_V2_002011_20220930
 #&gt;   - S2-16D_V2_002012_20220930
