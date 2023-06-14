@@ -64,26 +64,26 @@ s_obj |>
 
 ## ----queries-6, eval=TRUE-----------------------------------------------------
 s_obj |> 
-  stac_search(collections = c("CB4_64_16D_STK", "S2-16D-2")) |>
-  ext_query("bdc:tile" == "022024")
+  stac_search(collections = c("CB4-16D-2", "S2-16D-2")) |>
+  ext_query("bdc:tile" == "007004")
 
 ## ----request-1----------------------------------------------------------------
 s_obj |>
-  collections(collection_id = "CB4_64_16D_STK-1") |>
+  collections(collection_id = "CB4-16D-2") |>
   items() |>
   get_request() 
 
 ## ----request-2----------------------------------------------------------------
 s_obj |>
   stac_search(
-    collections = c("CB4_64_16D_STK-1", "S2-16D-2"),
+    collections = c("CB4-16D-2", "S2-16D-2"),
     datetime = "2021-01-01/2021-01-31",
     limit = 400) |>
   post_request()
 
 ## ----request-3----------------------------------------------------------------
 s_obj |> 
-  stac_search(collections = c("CB4_64_16D_STK-1", "S2-16D-2")) |>
+  stac_search(collections = c("CB4-16D-2", "S2-16D-2")) |>
   post_request(config = c(httr::add_headers("x-api-key" = "MY-KEY")))
 
 ## ----catalog------------------------------------------------------------------
@@ -97,8 +97,8 @@ s_obj |>
 
 ## ----item---------------------------------------------------------------------
 s_obj |>
-  collections("CB4_64_16D_STK-1") |>
-  items(feature_id = "CB4_64_16D_STK_v001_021027_2020-07-11_2020-07-26") |>
+  collections("CB4-16D-2") |>
+  items(feature_id = "CB4-16D_V2_000002_20230509") |>
   get_request()
 
 ## ----item-collection----------------------------------------------------------
@@ -109,7 +109,7 @@ s_obj |>
 ## ----fields-------------------------------------------------------------------
 s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 100) |> 
   post_request() |>
@@ -118,7 +118,7 @@ s_obj |>
 ## ----filter-------------------------------------------------------------------
 s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 100) |> 
   post_request() |>
@@ -127,7 +127,7 @@ s_obj |>
 ## ----length-------------------------------------------------------------------
 s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 100) |> 
   post_request() |>
@@ -136,7 +136,7 @@ s_obj |>
 ## ----matched------------------------------------------------------------------
 s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 100) |>
   post_request() |>
@@ -145,7 +145,7 @@ s_obj |>
 ## ----fetch--------------------------------------------------------------------
 items_fetched <- s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 500) |>
   post_request() |>
@@ -162,7 +162,7 @@ items_assets(items_fetched)
 ## ----assets-2-----------------------------------------------------------------
 s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 10) |>
   post_request() |>
@@ -171,7 +171,7 @@ s_obj |>
 ## ----assets-select------------------------------------------------------------
 selected_assets <- s_obj |>
   stac_search(
-    collections = "CB4_64_16D_STK-1",
+    collections = "CB4-16D-2",
     datetime = "2019-01-01/2019-12-31",
     limit = 10) |>
   post_request() |>
