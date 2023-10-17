@@ -79,11 +79,11 @@ is_accessible <- is_online && tryCatch({
 })
 
 ## ----asset-preview, eval=is_accessible, fig.height=3, fig.width=5-------------
-selected_item$assets[["rendered_preview"]]$href
-
-selected_item |> 
-  assets_url(asset_names = "rendered_preview") |>
-  preview_plot()
+#  selected_item$assets[["rendered_preview"]]$href
+#  
+#  selected_item |>
+#    assets_url(asset_names = "rendered_preview") |>
+#    preview_plot()
 
 ## ----sign-item----------------------------------------------------------------
 selected_item <- selected_item |>

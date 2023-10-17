@@ -1,7 +1,7 @@
-eca327f375f61d2c43590da19eab7176 *DESCRIPTION
+c1604088fdacf2d0b4aded6e07cd31f1 *DESCRIPTION
 ea5c75387e9faf53f0940142fa2375ca *LICENSE
 0caee17fb946e9ec92be4cd732b2d9f0 *NAMESPACE
-5c3bd01ae6a9281a683edb9c4d8e5b6c *NEWS.md
+223cdd2e325e43e0413831e67f28e149 *NEWS.md
 81d4b98292b0dba549c224db0d31c0f9 *R/assets-funs.R
 e231a9bdbd957e6cc30bd3966260ef15 *R/assets-utils.R
 13b207a5931489c0392cd98cc3a366f0 *R/check-utils.R
@@ -32,7 +32,7 @@ af822971c8f164e44159422427f67850 *R/message-utils.R
 7e8f91394addf1c7ee49870d3c95ef92 *R/queryables-query.R
 c45edb276ee726aaaf89c63fe218c662 *R/request.R
 5308d56b86788444571c872a04340882 *R/rstac.R
-2df17d46159ab0839e8b9116850c30aa *R/signatures.R
+09e30420a85734fff201d5461b23604a *R/signatures.R
 7fabc643a005a7e1e51c4aef5b44af48 *R/stac-query.R
 a89610397b5a15b3d545873ae259148a *R/stac_search.R
 4d961e16c13224022827b52683f85b20 *R/stac_version.R
@@ -44,13 +44,13 @@ a89610397b5a15b3d545873ae259148a *R/stac_search.R
 7615ed259fd547ae2d79beadd2d23582 *inst/CITATION
 9b6b27edc4705430c37008b97f7d1ba0 *inst/doc/rstac-01-intro.R
 22e64e98b15888046c66d66883e3e7e4 *inst/doc/rstac-01-intro.Rmd
-9e9e57a394ec47bc689afc3953478b95 *inst/doc/rstac-01-intro.html
+9f2adba7470731c845398ec01eddead1 *inst/doc/rstac-01-intro.html
 148ccabf5c7e2f00c6c65d924aea16bb *inst/doc/rstac-02-cql2.R
 8822de312098e69c82d30eba961f0f84 *inst/doc/rstac-02-cql2.Rmd
 79b40a6792d28f2f40e325fb63be8761 *inst/doc/rstac-02-cql2.html
-06ad6e15bd8ef3383f891b43b5e93a35 *inst/doc/rstac-03-cql2-mpc.R
+1791900f8647ebb26f93582d4261fe1d *inst/doc/rstac-03-cql2-mpc.R
 d045c64444e47648d2770f0708b0c116 *inst/doc/rstac-03-cql2-mpc.Rmd
-17a591f24141283eb8da645e6664fe60 *inst/doc/rstac-03-cql2-mpc.html
+24a0a7e9f7d32e1b48c28f97676c1aa8 *inst/doc/rstac-03-cql2-mpc.html
 97a1782845cd73fb733689238de5d0f4 *inst/extdata/img/logo.png
 7b8ec18734e8fb8a4b5d768d73ec7bc4 *man/RSTACDocument.Rd
 27e08f89c7e6da4ae16ab0837684aee8 *man/assets_filter.Rd

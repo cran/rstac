@@ -517,18 +517,18 @@ headers (<code>httr::add_headers()</code>) and cookies
   items() |&gt;
   get_request() 
 #&gt; ###STACItemCollection
-#&gt; - matched feature(s): 12172
-#&gt; - features (10 item(s) / 12162 not fetched):
-#&gt;   - CB4-16D_V2_000002_20230509
-#&gt;   - CB4-16D_V2_000003_20230509
-#&gt;   - CB4-16D_V2_001002_20230509
-#&gt;   - CB4-16D_V2_000004_20230509
-#&gt;   - CB4-16D_V2_001001_20230509
-#&gt;   - CB4-16D_V2_001004_20230509
-#&gt;   - CB4-16D_V2_001003_20230509
-#&gt;   - CB4-16D_V2_002001_20230509
-#&gt;   - CB4-16D_V2_002002_20230509
-#&gt;   - CB4-16D_V2_002004_20230509
+#&gt; - matched feature(s): 12740
+#&gt; - features (10 item(s) / 12730 not fetched):
+#&gt;   - CB4-16D_V2_000002_20230914
+#&gt;   - CB4-16D_V2_000003_20230914
+#&gt;   - CB4-16D_V2_001001_20230914
+#&gt;   - CB4-16D_V2_000004_20230914
+#&gt;   - CB4-16D_V2_001002_20230914
+#&gt;   - CB4-16D_V2_002000_20230914
+#&gt;   - CB4-16D_V2_001004_20230914
+#&gt;   - CB4-16D_V2_001003_20230914
+#&gt;   - CB4-16D_V2_002001_20230914
+#&gt;   - CB4-16D_V2_002003_20230914
 #&gt; - assets: 
 #&gt; BAND13, BAND14, BAND15, BAND16, CLEAROB, CMASK, EVI, NDVI, PROVENANCE, TOTALOB, thumbnail
 #&gt; - item&#39;s fields: 
@@ -566,18 +566,18 @@ request:</p>
   stac_search(collections = c(&quot;CB4-16D-2&quot;, &quot;S2-16D-2&quot;)) |&gt;
   post_request(config = c(httr::add_headers(&quot;x-api-key&quot; = &quot;MY-KEY&quot;)))
 #&gt; ###STACItemCollection
-#&gt; - matched feature(s): 100897
-#&gt; - features (10 item(s) / 100887 not fetched):
-#&gt;   - CB4-16D_V2_000002_20230509
-#&gt;   - CB4-16D_V2_000003_20230509
-#&gt;   - CB4-16D_V2_001002_20230509
-#&gt;   - CB4-16D_V2_000004_20230509
-#&gt;   - CB4-16D_V2_001001_20230509
-#&gt;   - CB4-16D_V2_001004_20230509
-#&gt;   - CB4-16D_V2_001003_20230509
-#&gt;   - CB4-16D_V2_002001_20230509
-#&gt;   - CB4-16D_V2_002002_20230509
-#&gt;   - CB4-16D_V2_002004_20230509
+#&gt; - matched feature(s): 118204
+#&gt; - features (10 item(s) / 118194 not fetched):
+#&gt;   - CB4-16D_V2_000002_20230914
+#&gt;   - CB4-16D_V2_000003_20230914
+#&gt;   - CB4-16D_V2_001001_20230914
+#&gt;   - CB4-16D_V2_000004_20230914
+#&gt;   - CB4-16D_V2_001002_20230914
+#&gt;   - CB4-16D_V2_002000_20230914
+#&gt;   - CB4-16D_V2_001004_20230914
+#&gt;   - CB4-16D_V2_001003_20230914
+#&gt;   - CB4-16D_V2_002001_20230914
+#&gt;   - CB4-16D_V2_002003_20230914
 #&gt; - assets: 
 #&gt; BAND13, BAND14, BAND15, BAND16, CLEAROB, CMASK, EVI, NDVI, PROVENANCE, TOTALOB, thumbnail
 #&gt; - item&#39;s fields: 
@@ -605,7 +605,7 @@ format for viewing objects is in <strong>Markdown</strong>.</p>
   get_request()
 #&gt; ###STACCollection
 #&gt; - id: S2-16D-2
-#&gt; - title: Sentinel-2 - MSI - 16 days - v2
+#&gt; - title: Sentinel-2 - 10m - 16 days - v2
 #&gt; - description: 
 #&gt; This datacube was generated with all available surface reflectance images processed using Sen2cor. The data is provided with 10 meters of spatial resolution, reprojected and cropped to BDC_SM grid Version 2 (BDC_SM V2), considering a temporal compositing function of 16 days using the Least Cloud Cover First (LCF) best pixel approach.
 #&gt; - field(s): 
@@ -633,8 +633,8 @@ format for viewing objects is in <strong>Markdown</strong>.</p>
   stac_search(collections = c(&quot;CB4_64_16D_STK&quot;, &quot;S2-16D-2&quot;)) |&gt;
   get_request()
 #&gt; ###STACItemCollection
-#&gt; - matched feature(s): 88725
-#&gt; - features (10 item(s) / 88715 not fetched):
+#&gt; - matched feature(s): 105465
+#&gt; - features (10 item(s) / 105455 not fetched):
 #&gt;   - S2-16D_V2_001014_20220930
 #&gt;   - S2-16D_V2_002011_20220930
 #&gt;   - S2-16D_V2_002012_20220930

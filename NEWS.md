@@ -1,5 +1,13 @@
 # rstac (development version)
 
+# rstac 0.9.2-5 (Released 2023-10-17)
+
+* Fix MPC reuse token
+
+# rstac 0.9.2-4 (Released 2023-06-15)
+
+* update vignettes and examples
+
 # rstac 0.9.2-3 (Released 2023-04-17)
 
 * Fix renewing mpc tokens per session
